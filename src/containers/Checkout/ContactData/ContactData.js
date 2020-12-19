@@ -106,11 +106,11 @@ class ContactData extends Component {
             orderData: formData
         };
         axios.post('/orders.json', order)
-            .then(response => {
+            .then(() => {
                 this.setState({loading: false, purchasing: false});
                 this.props.history.push('/');
             })
-            .catch(error => {
+            .catch(() => {
                 this.setState({loading: false, purchasing: false});
             });
     }
