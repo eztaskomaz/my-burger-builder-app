@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import Aux from '../Aux/Aux';
 import classes from './Layout.css';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
@@ -10,7 +11,7 @@ class Layout extends Component {
     }
 
     sideDrawerClosedHandler = () => {
-        this.setState({showSideDrawer: false})
+        this.setState({showSideDrawer: false});
     }
 
     sideDrawerToggleHandler = () => {
