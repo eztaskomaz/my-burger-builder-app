@@ -1,12 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
+import {updateObject} from "../utility";
 
 const initialState = {
-    ingredients: {
-        salad: 0,
-        bacon: 0,
-        meat: 0,
-        cheese:0
-    },
+    ingredients: null,
     totalPrice: 4
 };
 
@@ -17,30 +13,43 @@ const INGREDIENT_PRICES = {
     bacon: 0.7
 };
 
+const addIngredient = (state, action) => {
+    const addedIngredient = {[action.ingredientName]: state.ingredients[action.ingredientName] + 1};
+    const addedIngredients = updateObject(state.ingredients, addedIngredient);
+    const addedState = {
+        ingredients: addedIngredients,
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+    }
+    return updateObject(addedState);
+}
+
+const removeIngredient = (state, action) => {
+    const removedIngredient = {[action.ingredientName]: state.ingredients[action.ingredientName] - 1};
+    const removedIngredients = updateObject(state.ingredients, removedIngredient);
+    const removedState = {
+        ingredients: removedIngredients,
+        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+    }
+    return updateObject(removedState);
+}
+
+const setIngredient = (state, action) => {
+    return updateObject(state, {
+        ingredients: action.ingredients,
+        totalPrice: 4});
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.ADD_INGREDIENT:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-                },
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
-            };
+            return addIngredient(state, action);
         case actionTypes.REMOVE_INGREDIENT:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.ingredientName]: state.ingredients[action.ingredientName] - 1
-                },
-                totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
-            };
+            return removeIngredient(state, action);
+        case actionTypes.SET_INGREDIENTS:
+            return setIngredient(state, action);
         default:
-
+            return state;
     }
-    return state;
 };
 
 export default reducer;
